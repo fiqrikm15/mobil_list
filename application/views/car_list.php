@@ -198,7 +198,63 @@
             });
         });
 
-        
+        $('#show_data').on('click', '.item-edit', function(){
+            var merk = $(this).data('merk');
+            var id = $(this).data('id');
+            var warna = $(this).data('warna');
+            var tahun = $(this).data('tahun');
+
+            $('#Modal_Edit').modal('show');
+            $('[name="merk_edit"').val(merk);
+            $('[name="id_edit"').val(id);
+            $('[name="tahun_edit"').val(tahun);
+            $('[name="warna_edit"').val(warna);
+        });
+
+        $('#btn_edit').on('click', function(){
+            var merk = $('#merk_edit').val();
+            var tahun = $('#tahun_edit').val();
+            var warna = $('#warna_edit').val();
+            var id = $('#id_edit').val();
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url('car/update_data') ?>",
+                dataType: "JSON",
+                data: {id: id, merk: merk, warna: warna, tahun:tahun},
+                success: function(data){
+                    $('[name="merk_edit"]').val("");
+                    $('[name="id_edit"]').val("");
+                    $('[name="warna_edit"]').val("");
+                    $('[name="tahun_edit"]').val("");
+                    $('#Modal_Edit').modal('hide');
+                    show_car();
+                }
+            });
+        });
+
+        $('#show_data').on('click', '.item-delete', function(){
+            var id = $(this).data('id');
+
+            $('#Modal_Delete').modal('show');
+            $('[name="id_delete"').val(id);
+        });
+
+        $('#btn_delete').on('click', function(){
+            var id = $('#id_delete').val();
+
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url('car/delete_data') ?>",
+                dataType: "JSON",
+                data: {id: id},
+                success: function(data){
+                    $('[name="id_delete"]').val("");
+                    $('#Modal_Delete').modal('hide');
+                    show_car();
+                }
+            });
+        });
     });
 </script>
 </body>
